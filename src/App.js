@@ -8,12 +8,20 @@ import { useEffect } from "react";
 import { auth } from "./firbase";
 import { useStateValue } from "./StateProvider";
 import { onAuthStateChanged } from "firebase/auth";
+import Payment from "./Payment";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const promise = loadStripe(
+  "pk_test_51L981ASCzgpQfL3tndASsuI6tIYqLOAGhN0JctBO8O5ft01Bfr1KVlG41G302zT5ELB7VO74Jihkrd8KRtDctoBz00qacls2la"
+);
+
+
 function App() {
   const [{}, dispatch] = useStateValue();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      
       if (user) {
         // User is signed in
         dispatch({
@@ -61,6 +69,18 @@ function App() {
               <>
                 <Header />
                 <Checkout />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/payment"
+            element={
+              <>
+                <Header />
+                <Elements stripe={promise}>
+                  <Payment />
+                </Elements>
               </>
             }
           />
