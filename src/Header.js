@@ -21,7 +21,7 @@ function Header() {
             search box
             3 links
             basket icon with number */}
-      <Link to="/login">
+      <Link to="/">
         <img
           className="header_logo"
           src="http://pngimg.com/uploads/amazon/amazon_PNG11.png"
@@ -38,7 +38,7 @@ function Header() {
           <Link to="/login" className="header_link">
             <div onClick={handleAuthentication} className="header_option">
               <span className="header_optionLineOne">Hello </span>
-              <span className="header_optionLineOne"> {user.email} </span>
+              <span className="header_optionLineOne"> {user?.email} </span>
               <span className="header_optionLineTwo">{user ? 'Sign Out':'Sign In'}</span>
             </div>           
           </Link>

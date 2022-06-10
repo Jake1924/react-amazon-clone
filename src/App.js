@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log('Your are : ',user.email);
+      
       if (user) {
         // User is signed in
         dispatch({
