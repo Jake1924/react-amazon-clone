@@ -1,17 +1,11 @@
+export const initialState = {
+  basket: [],
+  user: null,
+};
+
+// Selector
 export const getBasketTotal = (basket) =>
   basket?.reduce((amount, item) => item.price + amount, 0);
-
-export const initialState = {
-  basket: [
-    {
-      id: 1223455,
-      title: "The Rishav show how to Startup: How constant Innovation creates",
-      price: 11.96,
-      rating: 4,
-      image: "https://images-na.ssl-images-amazon.com/images/I/81vvgZqCskL.jpg",
-    },
-  ],
-};
 
 const reducer = (state, action) => {
   console.log(action);
@@ -45,6 +39,13 @@ const reducer = (state, action) => {
         basket: newBasket,
       };
       break;
+
+    case "SET_USER":
+      return{
+        ...state,
+        user: action.user
+      }
+
     default:
       return state;
   }

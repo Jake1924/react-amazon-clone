@@ -4,7 +4,33 @@ import Header from "./Header";
 import Home from "./Home";
 import Checkout from "./Checkout";
 import Login from "./Login";
+import { useEffect } from "react";
+import { auth } from "./firbase";
+import { useStateValue } from "./StateProvider";
+import { onAuthStateChanged } from "firebase/auth";
 function App() {
+  const [{}, dispatch] = useStateValue();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('Your are : ',user.email);
+      if (user) {
+        // User is signed in
+        dispatch({
+          type: "SET_USER",
+          user: user,
+        });
+        // ...
+      } else {
+        // User is signed out
+        dispatch({
+          type: "SET_USER",
+          user: null,
+        });
+      }
+    });
+  }, []);
+
   return (
     <Router>
       <div className="app">
@@ -24,7 +50,7 @@ function App() {
             path="/login"
             element={
               <>
-                <Login/>
+                <Login />
               </>
             }
           />
