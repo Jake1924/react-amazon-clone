@@ -1,23 +1,44 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  auth,
+  logInWithEmailAndPassword,
+  registerWithEmailAndPassword,
+} from "./firbase";
 import "./Login.css";
 function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signIn = (e) => {
-      e.preventDefault();
-      console.log("email: ",email);
-      console.log("password: ",password);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+        
+          const uid = user.uid;
+          console.log(uid);
+          navigate("../",{replace: true});
+          // ...
+        } else {
+          // User is signed out
+          console.log("user isn't Signed-In");
+        }
+      });
+  }, []);
 
-      //Todo: Logics to implement firebase authentication...
+  const signIn = (e) => {
+    e.preventDefault();
+
+    //Todo: Logics to implement firebase authentication...
+    logInWithEmailAndPassword(email, password);
   };
   const register = (e) => {
-      e.preventDefault();
-      console.log("email: ",email);
-      console.log("password: ",password);
-
-      //Todo: Logics to implement firebase authentication...
+    e.preventDefault();
+    
+    //Todo: Logics to implement firebase authentication to register...
+    registerWithEmailAndPassword("Rishav-testing", email, password);
   };
   return (
     <div className="login">
