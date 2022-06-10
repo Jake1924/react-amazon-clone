@@ -6,7 +6,7 @@ import { useStateValue } from "./StateProvider";
 import { getBasketTotal } from "./reducer";
 import CurrencyFormat from "react-currency-format";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
-import axios from "axios";
+import axios from "./axios";
 
 function Payment() {
   const [{ user, basket }, dispatch] = useStateValue();
@@ -31,12 +31,14 @@ function Payment() {
       const response = await axios({
         method: "post",
         // Stripe expects the total in a currencies sub-units
-        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
+        url: `/payments/create?total=${parseInt(getBasketTotal(basket) * 100 )}`,
       });
       setClientSecret(response.data.clientSecret);
     };
     getClientSecret();
   }, [basket]);
+
+//   console.log("The SECRET >>>",clientSecret);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
