@@ -5,7 +5,7 @@ import {
   auth,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
-} from "./firbase";
+} from "./firebase";
 import "./Login.css";
 function Login() {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Payment.css";
+import {db} from './firebase'
 import { Link, useNavigate } from "react-router-dom";
 import CheckoutProduct from "./CheckoutProduct";
 import { useStateValue } from "./StateProvider";
@@ -7,6 +8,7 @@ import { getBasketTotal } from "./reducer";
 import CurrencyFormat from "react-currency-format";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "./axios";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 function Payment() {
   const [{ user, basket }, dispatch] = useStateValue();
@@ -53,25 +55,26 @@ function Payment() {
         },
       })
       .then(({ paymentIntent }) => {
-        // Payment Intent is Payment Confirmation
+        // Payment Intent is Payment Confirmation   
 
-        // db.collection("users")
-        //   .doc(user?.uid)
-        //   .collection("orders")
-        //   .doc(paymentIntent.id)
-        //   .set({
-        //     basket,
-        //     amount: paymentIntent.amount,
-        //     created: paymentIntent.created,
-        //   });
+      const ordersDocRef = doc(db, "users", user?.uid);
+       setDoc(ordersDocRef, {
+        orders:{
+          basket,
+          amount:12334, //paymentIntent.amount || null,
+          created: 223311, //paymentIntent.created || null,
+        }
+        })
+
+          
 
         setSucceeded(true);
         setError(null);
         setProcessing(false);
 
-        // dispatch({
-        //   type: "EMPTY_BASKET",
-        // });
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
 
         navigateTo('../orders',{replace:true});
       });
